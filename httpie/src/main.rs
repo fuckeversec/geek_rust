@@ -1,4 +1,4 @@
-use clap::{AppSettings, Parser};
+use clap::Parser;
 
 // 定义 HTTPie 的 CLI 的主入口，它包含若干个子命令
 // 下面 /// 的注释是文档，clap 会将其作为 CLI 的帮助
@@ -6,14 +6,13 @@ use clap::{AppSettings, Parser};
 /// A naive httpie implementation with Rust, can you imagine how easy it is?
 #[derive(Parser, Debug)]
 #[clap(version = "1.0", author = "Tyr Chen <tyr@chen.com>")]
-#[clap(setting = AppSettings::ColoredHelp)]
 struct Opts {
     #[clap(subcommand)]
     subcmd: SubCommand,
 }
 
 // 子命令分别对应不同的 HTTP 方法，目前只支持 get / post
-#[derive(clap, Debug)]
+#[derive(Parser, Debug)]
 enum SubCommand {
     Get(Get),
     Post(Post),
@@ -23,7 +22,7 @@ enum SubCommand {
 // get 子命令
 
 /// feed get with an url and we will retrieve the response for you
-#[derive(clap, Debug)]
+#[derive(Parser, Debug)]
 struct Get {
     /// HTTP 请求的 URL
     url: String,
@@ -33,7 +32,7 @@ struct Get {
 
 /// feed post with an url and optional key=value pairs. We will post the data
 /// as JSON, and retrieve the response for you
-#[derive(clap, Debug)]
+#[derive(Parser, Debug)]
 struct Post {
     /// HTTP 请求的 URL
     url: String,
@@ -44,4 +43,4 @@ struct Post {
 fn main() {
     let opts: Opts = Opts::parse();
     println!("{:?}", opts);
-} 
+}
